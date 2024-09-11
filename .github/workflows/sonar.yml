@@ -1,0 +1,30 @@
+name: Sonar_Scan
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  scan:
+    name: scan
+    runs-on: [self-hosted,linux]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+  always:
+    if: always()
+    name: always
+    needs: scan
+    runs-on: [self-hosted,linux]
+    steps:
+      - name: SonarQube Scan
+        shell: bash
+        run: |
+          echo "SonarQube Scan Complete"
+        
