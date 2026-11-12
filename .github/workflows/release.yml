@@ -11,7 +11,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Setup node
@@ -32,7 +32,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - run: git push origin $GITHUB_SHA:v5.x
@@ -44,11 +44,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
           fetch-depth: 2
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
           node-version: lts/hydrogen # 18
           cache: 'npm'

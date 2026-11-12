@@ -95,13 +95,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
       - name: Set Conformance Suite Version
         run: |
           export VERSION=($(curl --silent "https://gitlab.com/api/v4/projects/4175605/releases" | jq -r '.[0].tag_name'))
           echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Load Cached Conformance Suite Build
-        uses: actions/cache@v3
+        uses: actions/cache@v6
         id: cache
         with:
           path: ./conformance-suite
@@ -113,7 +113,7 @@ jobs:
           docker-compose -f docker-compose-dev.yml up -d
           while ! curl -skfail https://localhost.emobix.co.uk:8443/api/runner/available >/dev/null; do sleep 2; done
       - run: git clone --depth 1 --single-branch --branch main https://github.com/panva/openid-client-certification-suite.git runner
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v7
         with:
           node-version: lts/hydrogen # 18
           cache: 'npm'
@@ -124,14 +124,14 @@ jobs:
       - run: npm run test
         working-directory: ./runner
       - name: Upload test artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           path: runner/export-*.zip
           name: ${{ matrix.setup.plan }} failed html results
           if-no-files-found: ignore
         if: ${{ failure() }}
       - name: Upload test logs
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           if-no-files-found: warn
           name: ${{ matrix.setup.plan }} runner logs
